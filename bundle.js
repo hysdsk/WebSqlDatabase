@@ -47,30 +47,37 @@ var remove = function(){
 }
 },{"./TodoDao":2,"./jquery-3.2.1.min":3}],2:[function(require,module,exports){
 var TodoDao = function(){
-  var db_name = 'localdb'
-  var db_version = '1.0'
-  var db_description = 'Web SQL Database'
-  var db_size = 2 * 1024 * 1024
-  var db = openDatabase(db_name, db_version, db_description, db_size)
+  var name = 'localdb'
+  var version = '1.0'
+  var description = 'Web SQL Database'
+  var size = 2 * 1024 * 1024
+  var callback = console.log('Opened Database')
+  var db = openDatabase(name, version, description, size, callback)
 
   // テーブル作成
-  db.transaction(function (tx) {
-    tx.executeSql('create table if not exists todo (id integer primary key autoincrement, todo varchar)')
+  db.transaction(function(tx){
+    tx.executeSql(`
+      create table if not exists todo (
+        id integer primary key autoincrement,
+        todo varchar
+      )
+    `)
   })
 
   // 全件検索
   this.findAll = function(success){
     db.transaction(function (tx) {
-      tx.executeSql('select * from todo', [], function (tx, results) {
-        var list = []
-        for (i = 0; i < results.rows.length; i++){
-          list.push({
-            id: results.rows.item(i).id,
-            todo: results.rows.item(i).todo
-          })
-        }
-        success(list)
-      }, null)
+      tx.executeSql('select * from todo', [],
+        function (tx, results) {
+          var list = []
+          for (i = 0; i < results.rows.length; i++){
+            list.push({
+              id: results.rows.item(i).id,
+              todo: results.rows.item(i).todo
+            })
+          }
+          success(list)
+        })
     })
   }
 
@@ -90,7 +97,6 @@ var TodoDao = function(){
 
   // 削除
   this.remove = function(id, callback){
-    console.log('remove id:'+id)
     db.transaction(function (tx) {
       tx.executeSql('delete from todo where id = ?', [id], callback)
     })
