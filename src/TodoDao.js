@@ -3,8 +3,7 @@ var TodoDao = function(){
   var version = '1.0'
   var description = 'Web SQL Database'
   var size = 2 * 1024 * 1024
-  var callback = console.log('Opened Database')
-  var db = openDatabase(name, version, description, size, callback)
+  var db = openDatabase(name, version, description, size)
 
   // テーブル作成
   db.transaction(function(tx){

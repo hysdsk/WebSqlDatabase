@@ -8,7 +8,8 @@ var tododao = new TodoDao()
 $(document).ready(function(){
   // イベントハンドラ登録
   $('input[name=todo]').keyup(function(v){
-    $('button[name=register], button[name=edit]').prop('disabled', $(this).val() == 0)
+    $('button[name=register], button[name=edit]')
+      .prop('disabled', $(this).val() == 0)
   })
   $('button[name=register]').on('click', register)
   $('#table tbody').on('click', 'tr td button[name=edit]', edit)
@@ -24,9 +25,14 @@ var init = function(){
   // TODO表検索
   tododao.findAll(function(list){
     $.each(list, function(i, e) {
-      var updBtn = `<button type="button" name="edit" value="${e.id}">更新</button>`
-      var delBtn = `<button type="button" name="remove" value="${e.id}">削除</button>`
-      $('#table tbody').append(`<tr><td>${i+1}</td><td>${e.todo}</td><td>${updBtn}</td><td>${delBtn}</td></tr>`);
+      $('#table tbody').append(`
+        <tr>
+          <td>${i+1}</td>
+          <td>${e.todo}</td>
+          <td><button type="button" name="edit" value="${e.id}">更新</button></td>
+          <td><button type="button" name="remove" value="${e.id}">削除</button></td>
+        </tr>
+      `)
     })
 
     // TODOテキストボックス、ボタン初期化
@@ -58,8 +64,7 @@ var TodoDao = function(){
   var version = '1.0'
   var description = 'Web SQL Database'
   var size = 2 * 1024 * 1024
-  var callback = console.log('Opened Database')
-  var db = openDatabase(name, version, description, size, callback)
+  var db = openDatabase(name, version, description, size)
 
   // テーブル作成
   db.transaction(function(tx){
