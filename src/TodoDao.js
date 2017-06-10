@@ -17,7 +17,7 @@ var TodoDao = function(){
   })
 
   // 全件検索
-  this.findAll = function(success){
+  this.findAll = function(callback){
     db.transaction(function (tx) {
       tx.executeSql('select * from todo', [],
         function (tx, results) {
@@ -28,7 +28,7 @@ var TodoDao = function(){
               todo: results.rows.item(i).todo
             })
           }
-          success(list)
+          callback(list)
         })
     })
   }
