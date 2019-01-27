@@ -20,11 +20,11 @@ $(document).ready(function(){
 
 // 初期化（全件表示）
 var init = function(){
-  // TODO表削除
+  // TODO表の削除
   $('#table tbody').empty()
-  // TODO表検索
+  // TODO表の表示
   tododao.findAll(function(list){
-    $.each(list, function(i, e) {
+    $.each(list, function(i, e){
       $('#table tbody').append(`
         <tr>
           <td>${i+1}</td>
@@ -35,7 +35,7 @@ var init = function(){
       `)
     })
 
-    // TODOテキストボックス、ボタン初期化
+    // TODOテキストボックス、ボタンの初期化
     $('input[name=todo]').val('').focus().keyup()
   })
 }
@@ -78,9 +78,9 @@ var TodoDao = function(){
 
   // 全件検索
   this.findAll = function(callback){
-    db.transaction(function (tx) {
+    db.transaction(function (tx){
       tx.executeSql('select * from todo', [],
-        function (tx, results) {
+        function (tx, results){
           var list = []
           for (i = 0; i < results.rows.length; i++){
             list.push({
@@ -95,21 +95,21 @@ var TodoDao = function(){
 
   // 登録
   this.insert = function(todo, callback){
-    db.transaction(function (tx) {
+    db.transaction(function (tx){
       tx.executeSql('insert into todo (todo) values (?)', [todo], callback)
     })
   }
 
   // 更新
   this.update = function(id, todo, callback){
-    db.transaction(function (tx) {
+    db.transaction(function (tx){
       tx.executeSql('update todo set todo = ? where id = ?', [todo, id], callback)
     })
   }
 
   // 削除
   this.remove = function(id, callback){
-    db.transaction(function (tx) {
+    db.transaction(function (tx){
       tx.executeSql('delete from todo where id = ?', [id], callback)
     })
   }

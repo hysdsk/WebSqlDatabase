@@ -23,7 +23,7 @@ var init = function(){
   $('#table tbody').empty()
   // TODO表の表示
   tododao.findAll(function(list){
-    $.each(list, function(i, e) {
+    $.each(list, function(i, e){
       $('#table tbody').append(`
         <tr>
           <td>${i+1}</td>
